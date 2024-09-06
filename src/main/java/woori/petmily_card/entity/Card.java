@@ -5,8 +5,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -28,7 +29,10 @@ public class Card {
     private int serialNo;
 
     @Column(name = "expiration_date", nullable = false)
-    private Date expirationDate;
+    private LocalDate expirationDate;
+
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions;
 
     @CreatedDate
     @Column(updatable = false)
