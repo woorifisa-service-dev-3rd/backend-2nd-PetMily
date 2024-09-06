@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface CardRepository extends JpaRepository<Card, Integer> {
 
     Optional<Card> findBySerialNo(int serialNo);
+
 }
