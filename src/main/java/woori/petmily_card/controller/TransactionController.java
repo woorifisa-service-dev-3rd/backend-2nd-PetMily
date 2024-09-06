@@ -13,8 +13,8 @@ import woori.petmily_card.service.TransactionService;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    @GetMapping
-    public String go() {
+    @GetMapping("/save")
+    public String save() {
         return "saveTransaction";
     }
 
@@ -22,5 +22,11 @@ public class TransactionController {
     public String saveTransaction(int cardNo, int hospitalNo, int amount) {
         transactionService.save(cardNo, hospitalNo, amount);
         return "tmp";
+    }
+
+    @GetMapping("/show")
+    public String showTransactions(int cardNo, int page) {
+        transactionService.show(cardNo, page);
+        return "";
     }
 }
