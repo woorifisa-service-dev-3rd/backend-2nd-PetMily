@@ -47,8 +47,7 @@ public class MemberServiceImpl implements MemberService {
         return member; // 회원이 존재하고 비밀번호가 일치하면 로그인 성공
     }
 
-    @Override
-    public boolean checkDuplicateId(String id) {
+    private boolean checkDuplicateId(String id) {
         return memberRepository.findById(id) != null;
     }
 }
