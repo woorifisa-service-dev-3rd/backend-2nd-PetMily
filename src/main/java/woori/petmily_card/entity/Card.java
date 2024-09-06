@@ -1,22 +1,23 @@
 package woori.petmily_card.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+
+@Builder
+@Getter
 public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "card_no", nullable = false)
     private int cardNo;
 
     @ManyToOne
@@ -29,9 +30,10 @@ public class Card {
     @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
 
-    @Column(name = "created_at", nullable = false)
-    private Timestamp createdAt;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    private Timestamp updatedAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }

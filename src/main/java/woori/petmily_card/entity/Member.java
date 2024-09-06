@@ -1,49 +1,43 @@
 package woori.petmily_card.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+
+@Builder
+@Getter
 public class Member {
 
     @Id
-    @Column(name = "member_no", nullable = false)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int memberNo;
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "id", nullable = false)
-    private String username;
+    private String id;
 
-    @Column(name = "birthday", nullable = false)
-    private String birthDate;
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "job")
-    private String occupation;
-
     @Column(name = "point", nullable = false)
-    private int points;
+    private int point;
 
-    @OneToMany(mappedBy = "member")
-    private List<Board> boards;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "member")
-    private List<Card> cards;
-
-    @OneToMany(mappedBy = "member")
-    private List<Comment> comments;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 }
