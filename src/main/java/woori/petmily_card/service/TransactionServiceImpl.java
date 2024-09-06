@@ -34,9 +34,9 @@ public class TransactionServiceImpl implements TransactionService {
     private final int SIZE = 10;
 
     @Override
-    public void save(int cardNo, int hospitalNo, int amount) {
+    public void save(int memberNo, int hospitalNo, int amount) {
         transactionRepository.save(
-                new TransactionRequest(getCard(cardNo), getHospital(hospitalNo), amount)
+                new TransactionRequest(getCard(memberNo), getHospital(hospitalNo), amount)
                 .toTransaction());
     }
 
@@ -48,8 +48,8 @@ public class TransactionServiceImpl implements TransactionService {
                 .collect(Collectors.toList());
     }
 
-    private Card getCard(int cardNo) {
-        return cardRepository.findById(cardNo).orElseThrow(() -> new PetMilyException(CARD_NOT_FOUND));
+    private Card getCard(int memberNo) {
+        return cardRepository.findByMember_MemberNo(memberNo).orElseThrow(() -> new PetMilyException(CARD_NOT_FOUND));
     }
 
     private Hospital getHospital(int hospitalNo) {
