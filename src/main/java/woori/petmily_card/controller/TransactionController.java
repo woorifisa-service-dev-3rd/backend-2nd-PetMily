@@ -17,19 +17,19 @@ public class TransactionController {
 
     @GetMapping("/save")
     public String save() {
-        return "saveTransaction";
+        return "transaction/saveTransaction";
     }
 
     @PostMapping
     public String saveTransaction(int cardNo, int hospitalNo, int amount) {
         transactionService.save(cardNo, hospitalNo, amount);
-        return "tmp";
+        return "transaction/tmp";
     }
 
     @GetMapping("/show/{cardNo}/{page}")
     public String showTransactions(@PathVariable(value="cardNo") int cardNo,
                                    @PathVariable(value="page") int page, Model model) {
         model.addAttribute("transactions", transactionService.show(cardNo, page));
-        return "showTransaction";
+        return "transaction/showTransaction";
     }
 }
