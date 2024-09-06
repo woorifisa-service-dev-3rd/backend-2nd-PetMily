@@ -28,14 +28,10 @@
 <!-- 카드 발급 -->
 <h2>카드 발급</h2>
 <form action="#" th:action="@{/card/issue}" method="post">
-    <label for="issueSerialNo">시리얼 번호:</label>
-    <input type="number" id="issueSerialNo" name="serialNo" required="required"/>
-    <label for="issueExpirationDate">만료 날짜:</label>
-    <input type="date" id="issueExpirationDate" name="expirationDate" required="required"/>
-    <button type="submit">발급</button>
+    <button type="submit">카드 발급</button>
 </form>
-<div th:if="${message != null}">
-    <p th:text="${message}"></p>
+<div th:if="${issueMessage != null}">
+    <p th:text="${issueMessage}"></p>
 </div>
 
 <!-- 카드 취소 -->

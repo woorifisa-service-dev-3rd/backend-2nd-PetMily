@@ -7,6 +7,8 @@ import java.util.Optional;
 public interface CardService {
 
     Optional<Card> getCardBySerialNo(int serialNo);
-    Card issueCard(Card card);
+    void issueCard(Card card);
     boolean cancelCard(int cardNo);
+    int generateSimpleCardNumber();
+    int generateRandomCardNumber();
 }

@@ -15,6 +15,7 @@ import java.util.List;
 
 @Builder
 @Getter
+@Setter
 public class Card {
 
     @Id
@@ -25,7 +26,7 @@ public class Card {
     @JoinColumn(name = "member_no", nullable = false)
     private Member member;
 
-    @Column(name = "card_number", nullable = false)
+    @Column(name = "card_number", nullable = false, unique = true)
     private int serialNo;
 
     @Column(name = "expiration_date", nullable = false)
@@ -40,4 +41,8 @@ public class Card {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void setCardNumber(int generatedCardNumber) {
+        this.cardNo = generatedCardNumber;
+    }
 }

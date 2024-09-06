@@ -44,16 +44,6 @@ public class CardController {
         return mav;
     }
 
-    @PostMapping("/issue")
-    public ModelAndView issueCard(@ModelAttribute Card card) {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
-        Card issuedCard = cardService.issueCard(card);
-        mav.addObject("card", issuedCard);
-        mav.addObject("message", "카드가 성공적으로 생성되었습니다.");
-        return mav;
-    }
-
     @PostMapping("/cancel")
     public ModelAndView cancelCard(@RequestParam int cardNo) {
 
@@ -68,4 +58,26 @@ public class CardController {
         }
         return mav;
     }
+
+    @PostMapping("/issue")
+    public ModelAndView issueCard() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("card/management");
+
+        Card card = new Card();
+
+        // 회원 정보가 없어도 발급할 수 있도록 수정
+        // 임의의 회원 데이터를 설정하거나, member 필드를 null로 둠
+        card.setMember(null); // 또는 임의의 member 생성: new Member()
+
+        try {
+            cardService.issueCard(card);
+            mav.addObject("issueMessage", "카드가 발급되었습니다.");
+        } catch (IllegalArgumentException e) {
+            mav.addObject("issueMessage", "카드 발급 실패: " + e.getMessage());
+        }
+
+        return mav;
+    }
+
 }

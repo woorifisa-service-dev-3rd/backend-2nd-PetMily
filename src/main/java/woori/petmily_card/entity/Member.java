@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
+@Setter
 public class Member {
 
     @Id
