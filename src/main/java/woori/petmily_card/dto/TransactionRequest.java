@@ -11,10 +11,14 @@ public class TransactionRequest {
 
     private TransactionRequest() {}
 
-    public TransactionRequest(Card card, Hospital hospital, int amount) {
+    private TransactionRequest(Card card, Hospital hospital, int amount) {
         this.card = card;
         this.hospital = hospital;
         this.amount = amount;
+    }
+
+    public static TransactionRequest of(Card card, Hospital hospital, int amount) {
+        return new TransactionRequest(card, hospital, amount);
     }
 
     public Transaction toTransaction() {
