@@ -27,8 +27,14 @@ public class MemberController {
     // 회원가입 처리
     @PostMapping("/register")
     public ModelAndView register(MemberDto memberDto) {
-        memberService.register(memberDto);
-        return new ModelAndView("redirect:/login");
+        try {
+            memberService.register(memberDto);
+            return new ModelAndView("redirect:/login");
+        } catch (IllegalStateException e) {
+            ModelAndView mav = new ModelAndView("register");
+            mav.addObject("error", e.getMessage());
+            return mav;  // 중복 아이디가 있을 경우 에러 메시지 전달
+        }
     }
 
     // 로그인 페이지
