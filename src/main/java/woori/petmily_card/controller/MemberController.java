@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import woori.petmily_card.dto.MemberDto;
 import woori.petmily_card.entity.Member;
@@ -13,6 +14,7 @@ import woori.petmily_card.service.MemberService;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
 
