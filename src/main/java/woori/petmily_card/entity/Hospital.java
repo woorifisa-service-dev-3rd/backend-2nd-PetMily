@@ -26,7 +26,4 @@ public class Hospital {
 
     @Column(nullable = false)
     private int sale;
-
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private boolean status;
 }
