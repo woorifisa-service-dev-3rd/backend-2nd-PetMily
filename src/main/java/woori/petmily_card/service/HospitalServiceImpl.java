@@ -25,8 +25,9 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<HospitalResponse> showAll(int page) {
-        return getHospitals(page).stream().map(HospitalResponse::from).collect(Collectors.toList());
+    public Page<HospitalResponse> showAll(int page) {
+        Page<Hospital> hospitals = getHospitals(page);
+        return hospitals.map(HospitalResponse::from);
     }
 
     @Override
