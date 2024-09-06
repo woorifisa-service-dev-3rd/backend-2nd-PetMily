@@ -16,14 +16,16 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public String save() {
+    public String toSave() {
         return "transaction/saveTransaction";
     }
 
-    @PostMapping
-    public String saveTransaction(int cardNo, int hospitalNo, int amount) {
-        transactionService.save(cardNo, hospitalNo, amount);
-        return "transaction/tmp";
+    @PostMapping("/{hospitalNo}")
+    public String saveTransaction(@PathVariable(value = "hospitalNo") int hospitalNo, int amount, Model model) {
+        int memberNo = 1; // 회원 기능 연결 후 수정
+        transactionService.save(memberNo, hospitalNo, amount);
+        model.addAttribute("amount", amount);
+        return "transaction/showReceipt";
     }
 
     @GetMapping("/{cardNo}/{page}")
