@@ -8,7 +8,7 @@
 <h1>선택한 병원</h1>
 <div th:text="${hospital.name}"></div>
 <div th:text="${hospital.sale} + '% ' + ${hospital.saleType}"></div>
-<form th:action="@{/transactions}" method="post">
+<form th:action="@{/transactions/{hospitalNo}(hospitalNo=${hospital.hospitalNo})}" method="post">
     <div>
         <label for="amount">결제 요청 금액:</label>
         <input type="number" id="amount" name="amount" required/>
