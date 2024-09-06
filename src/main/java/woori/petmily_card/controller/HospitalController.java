@@ -16,7 +16,13 @@ public class HospitalController {
 
     @GetMapping("/{page}")
     public String showHospitals(@PathVariable(value = "page") int page, Model model) {
-        model.addAttribute("hospitals", hospitalService.show(page));
+        model.addAttribute("hospitals", hospitalService.showAll(page));
         return "hospital/showHospital";
+    }
+
+    @GetMapping("/detail/{hospitalNo}")
+    public String showHospital(@PathVariable(value = "hospitalNo") int hospitalNo, Model model) {
+        model.addAttribute("hospital", hospitalService.show(hospitalNo));
+        return "hospital/showHospitalDetail";
     }
 }
