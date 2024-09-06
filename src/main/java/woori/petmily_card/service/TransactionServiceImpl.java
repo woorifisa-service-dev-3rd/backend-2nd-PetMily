@@ -6,10 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import woori.petmily_card.dto.HospitalResponse;
 import woori.petmily_card.dto.TransactionRequest;
 import woori.petmily_card.dto.TransactionResponse;
 import woori.petmily_card.entity.Card;
 import woori.petmily_card.entity.Hospital;
+import woori.petmily_card.entity.SaleType;
 import woori.petmily_card.entity.Transaction;
 import woori.petmily_card.exception.ErrorCode;
 import woori.petmily_card.exception.PetMilyException;
@@ -34,10 +36,11 @@ public class TransactionServiceImpl implements TransactionService {
     private final int SIZE = 10;
 
     @Override
-    public void save(int memberNo, int hospitalNo, int amount) {
-        transactionRepository.save(
-                new TransactionRequest(getCard(memberNo), getHospital(hospitalNo), amount)
-                .toTransaction());
+    public int save(int memberNo, int hospitalNo, int amount) {
+        Hospital hospital = getHospital(hospitalNo);
+        int saleAmount = afterSaleAmount(amount, hospital.getSaleType(), hospital.getSale());
+        transactionRepository.save(TransactionRequest.of(getCard(memberNo), hospital, saleAmount).toTransaction());
+        return saleAmount;
     }
 
     @Override
@@ -59,5 +62,10 @@ public class TransactionServiceImpl implements TransactionService {
     private Page<Transaction> getAllTransactionByCardNo(int cardNo, int page) {
         Pageable pageable = PageRequest.of(page, SIZE);
         return transactionRepository.findAllByCard_CardNo(cardNo, pageable);
+    }
+
+    private int afterSaleAmount(int defaultAmount, SaleType saleType, int sale) {
+        if(saleType.equals(SaleType.REWARD)) return defaultAmount;
+        return defaultAmount - defaultAmount * sale / 100;
     }
 }
