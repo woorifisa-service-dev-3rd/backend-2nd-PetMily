@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import woori.petmily_card.service.TransactionService;
 
 @Controller
-@RequestMapping("/transaction")
+@RequestMapping("/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionService transactionService;
 
-    @GetMapping("/save")
+    @GetMapping
     public String save() {
         return "transaction/saveTransaction";
     }
@@ -26,7 +26,7 @@ public class TransactionController {
         return "transaction/tmp";
     }
 
-    @GetMapping("/show/{cardNo}/{page}")
+    @GetMapping("/{cardNo}/{page}")
     public String showTransactions(@PathVariable(value="cardNo") int cardNo,
                                    @PathVariable(value="page") int page, Model model) {
         model.addAttribute("transactions", transactionService.show(cardNo, page));
