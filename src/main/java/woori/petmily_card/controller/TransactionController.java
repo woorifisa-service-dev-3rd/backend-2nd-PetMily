@@ -10,26 +10,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import woori.petmily_card.service.TransactionService;
 
 @Controller
-@RequestMapping("/transaction")
+@RequestMapping("/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionService transactionService;
 
-    @GetMapping("/save")
-    public String save() {
-        return "saveTransaction";
+    @GetMapping
+    public String toSave() {
+        return "transaction/saveTransaction";
     }
 
-    @PostMapping
-    public String saveTransaction(int cardNo, int hospitalNo, int amount) {
-        transactionService.save(cardNo, hospitalNo, amount);
-        return "tmp";
+    @PostMapping("/{hospitalNo}")
+    public String saveTransaction(@PathVariable(value = "hospitalNo") int hospitalNo, int amount, Model model) {
+        int memberNo = 1; // 회원 기능 연결 후 수정
+        model.addAttribute("amount", transactionService.save(memberNo, hospitalNo, amount));
+        return "transaction/showReceipt";
     }
 
-    @GetMapping("/show/{cardNo}/{page}")
+    @GetMapping("/{cardNo}/{page}")
     public String showTransactions(@PathVariable(value="cardNo") int cardNo,
                                    @PathVariable(value="page") int page, Model model) {
         model.addAttribute("transactions", transactionService.show(cardNo, page));
-        return "showTransaction";
+        return "transaction/showTransaction";
     }
 }
