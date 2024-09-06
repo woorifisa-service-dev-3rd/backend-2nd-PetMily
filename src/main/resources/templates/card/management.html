@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>카드 관리</title>
+</head>
+<body>
+<h1>카드 관리</h1>
+
+<!-- 카드 조회 -->
+<h2>카드 조회</h2>
+<form action="#" th:action="@{/card/view}" method="get">
+    <label for="viewSerialNo">카드 시리얼 번호:</label>
+    <input type="number" id="viewSerialNo" name="serialNo" required="required"/>
+    <button type="submit">조회</button>
+</form>
+<div th:if="${card != null}">
+    <h3>카드 정보</h3>
+    <p>카드 번호: <span th:text="${card.cardNo}"></span></p>
+    <p>시리얼 번호: <span th:text="${card.serialNo}"></span></p>
+    <p>만료 날짜: <span th:text="${card.expirationDate}"></span></p>
+    <p>생성 날짜: <span th:text="${card.createdAt}"></span></p>
+    <p>수정 날짜: <span th:text="${card.updatedAt}"></span></p>
+</div>
+<div th:if="${card == null}">
+    <p>카드를 찾을 수 없습니다.</p>
+</div>
+
+<!-- 카드 발급 -->
+<h2>카드 발급</h2>
+<form action="#" th:action="@{/card/issue}" method="post">
+    <label for="issueSerialNo">시리얼 번호:</label>
+    <input type="number" id="issueSerialNo" name="serialNo" required="required"/>
+    <label for="issueExpirationDate">만료 날짜:</label>
+    <input type="date" id="issueExpirationDate" name="expirationDate" required="required"/>
+    <button type="submit">발급</button>
+</form>
+<div th:if="${message != null}">
+    <p th:text="${message}"></p>
+</div>
+
+<!-- 카드 취소 -->
+<h2>카드 취소</h2>
+<form action="#" th:action="@{/card/cancel}" method="post">
+    <label for="cancelCardNo">카드 번호:</label>
+    <input type="number" id="cancelCardNo" name="cardNo" required="required"/>
+    <button type="submit">취소</button>
+</form>
+
+<div th:if="${cancelMessage != null}">
+    <p th:text="${cancelMessage}"></p>
+</div>
+
+</body>
+</html>
