@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import woori.petmily_card.dto.MemberDto;
 import woori.petmily_card.entity.Member;
+import woori.petmily_card.exception.PetMilyException;
 import woori.petmily_card.service.MemberService;
 
 import javax.servlet.http.HttpSession;
@@ -47,14 +48,14 @@ public class MemberController {
 
     // 로그인 처리
     @PostMapping("/login")
-    public ModelAndView login(MemberDto memberDto, HttpSession session, Model model) {
-        Member member = memberService.login(memberDto);
-        if (member != null) {
+    public ModelAndView login(MemberDto memberDto, HttpSession session) {
+        try {
+            Member member = memberService.login(memberDto);
             session.setAttribute("member", member);
             return new ModelAndView("redirect:/transaction");
-        } else {
+        } catch (PetMilyException e) {
             ModelAndView mav = new ModelAndView("login");
-            model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+            mav.addObject("error", e.getErrorCode().getMessage()); // 에러 메시지 전달
             return mav;
         }
     }
