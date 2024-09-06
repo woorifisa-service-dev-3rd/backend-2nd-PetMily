@@ -8,6 +8,7 @@ import woori.petmily_card.repository.CommentRepository;
 @Service
 public interface CommentService {
 
-    Comment save(Comment comment, int boardId);
+
+
 
 }
