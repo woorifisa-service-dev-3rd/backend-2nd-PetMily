@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Board List</title>
+</head>
+<body>
+<h1>Board List</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="board : ${boards}">
+        <td th:text="${board.title}"></td>
+        <td th:text="${board.content}"></td>
+        <td>
+            <a th:href="@{'/boards/' + ${board.boardNo}}">View</a>
+            <a th:href="@{'/boards/edit/' + ${board.boardNo}}">Edit</a>
+            <form th:action="@{'/boards/delete/' + ${board.boardNo}}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/boards/edit">Create New Board</a>
+</body>
+</html>
