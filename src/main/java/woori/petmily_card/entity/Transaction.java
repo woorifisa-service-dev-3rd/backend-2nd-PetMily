@@ -27,6 +27,10 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private int amount;
 
+    @ManyToOne
+    @JoinColumn(name = "hospital_no")
+    private Hospital hospital;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
