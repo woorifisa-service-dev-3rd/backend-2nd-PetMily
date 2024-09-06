@@ -26,7 +26,7 @@ public class Card {
     @JoinColumn(name = "member_no", nullable = false)
     private Member member;
 
-    @Column(name = "card_number", nullable = false, unique = true)
+    @Column(name = "card_number", nullable = false)
     private int serialNo;
 
     @Column(name = "expiration_date", nullable = false)
