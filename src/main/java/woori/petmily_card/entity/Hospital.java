@@ -20,6 +20,10 @@ public class Hospital {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "sale_type", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private SaleType saleType;
+
     @Column(nullable = false)
     private int sale;
 
