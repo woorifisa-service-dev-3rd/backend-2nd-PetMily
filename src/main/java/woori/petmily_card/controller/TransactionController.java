@@ -23,8 +23,7 @@ public class TransactionController {
     @PostMapping("/{hospitalNo}")
     public String saveTransaction(@PathVariable(value = "hospitalNo") int hospitalNo, int amount, Model model) {
         int memberNo = 1; // 회원 기능 연결 후 수정
-        transactionService.save(memberNo, hospitalNo, amount);
-        model.addAttribute("amount", amount);
+        model.addAttribute("amount", transactionService.save(memberNo, hospitalNo, amount));
         return "transaction/showReceipt";
     }
 
