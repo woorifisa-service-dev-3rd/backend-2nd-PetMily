@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>카드 발급</title>
+</head>
+<body>
+<h1>새 카드 발급</h1>
+<form action="#" th:action="@{/card/issue}" th:object="${card}" method="post">
+    <label for="serialNo">시리얼 번호:</label>
+    <input type="number" id="serialNo" th:field="*{serialNo}" required="required"/>
+    <label for="expirationDate">만료 날짜:</label>
+    <input type="date" id="expirationDate" th:field="*{expirationDate}" required="required"/>
+    <!-- 필요한 다른 필드 추가 -->
+    <button type="submit">카드 발급</button>
+</form>
+<div th:if="${message != null}">
+    <p th:text="${message}"></p>
+</div>
+</body>
+</html>
