@@ -46,14 +46,25 @@ public class BoardController {
     }
 
     @PostMapping("/edit")
-    public String saveNewBoard(@ModelAttribute Board board){
+    public String saveNewBoard(//@PathVariable int id,
+                               @RequestParam String content,
+                               @RequestParam String title){
         Optional<Member> member = memberRepository.findById(1);
 
-        Board newBoard = Board.builder().title(board.getTitle()).content(board.getContent())
-                .member(member.orElseThrow())
-                .createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).comments(null).build();
 
-        boardRepository.save(newBoard);
+        Board board = Board.builder().title(title).content(content)
+                .member(member.orElseThrow())
+                .createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).build();
+
+//        Board board = new Board();
+//        board.setTitle(title);
+//        board.setContent(content);
+//        board.setCreatedAt(LocalDateTime.now());
+//        board.setUpdatedAt(LocalDateTime.now());
+//        board.setMember(member.orElseThrow());
+//        board.setTitle(title);
+
+        boardRepository.save(board);
         return "redirect:/boards";
 
     }
