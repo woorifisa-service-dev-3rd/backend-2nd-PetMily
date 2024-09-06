@@ -6,7 +6,7 @@ import woori.petmily_card.entity.Card;
 import java.util.Optional;
 
 public interface CardRepository extends JpaRepository<Card, Integer> {
-
     Optional<Card> findBySerialNo(int serialNo);
 
+    Optional<Card> findByMember_MemberNo(int memberNo);
 }
