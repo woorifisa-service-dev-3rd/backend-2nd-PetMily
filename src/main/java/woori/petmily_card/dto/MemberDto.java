@@ -1,6 +1,7 @@
 package woori.petmily_card.dto;
 
 import lombok.Getter;
+import woori.petmily_card.entity.Member;
 
 @Getter
 public class MemberDto {
@@ -16,7 +17,13 @@ public class MemberDto {
         this.phoneNumber = phoneNumber;
     }
 
-    public static MemberDto of(String name, String id, String password, String phoneNumber) {
-        return new MemberDto(name, id, password, phoneNumber);
+    public Member toMember() {
+        return Member.builder()
+                .name(name)
+                .id(id)
+                .password(password)
+                .phoneNumber(phoneNumber)
+                .point(0)
+                .build();
     }
 }
