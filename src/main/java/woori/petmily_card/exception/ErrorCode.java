@@ -9,7 +9,8 @@ public enum ErrorCode {
     CARD_NOT_FOUND(NOT_FOUND, "존재하지 않는 카드입니다."),
     HOSPITAL_NOT_FOUND(NOT_FOUND, "존재하지 않는 병원입니다."),
     ALREADY_EXIST_ID(CONFLICT, "이미 존재하는 아이디입니다."),
-    MEMBER_NOT_FOUND(NOT_FOUND, "존재하지 않는 회원입니다.");
+    MEMBER_NOT_FOUND(NOT_FOUND, "존재하지 않는 회원입니다."),
+    INVALID_PASSWORD(UNAUTHORIZED, "비밀번호가 옳지 않습니다.");
 
     private final HttpStatus status;
     private final String message;

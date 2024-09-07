@@ -7,6 +7,8 @@ import woori.petmily_card.entity.Member;
 import woori.petmily_card.exception.PetMilyException;
 import woori.petmily_card.repository.MemberRepository;
 
+import java.util.Optional;
+
 import static woori.petmily_card.exception.ErrorCode.*;
 
 @Service
@@ -17,33 +19,26 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void register(MemberDto memberDto) {
-        if (checkDuplicateId(memberDto.getId())) {
-            throw new PetMilyException(ALREADY_EXIST_ID);
-        }
-
-        Member member = Member.builder()
-                .name(memberDto.getName())
-                .id(memberDto.getId())
-                .password(memberDto.getPassword())
-                .phoneNumber(memberDto.getPhoneNumber())
-                .point(0)
-                .build();
-        memberRepository.save(member);
+        checkDuplicateId(memberDto.getId());
+        memberRepository.save(memberDto.toMember());
     }
 
     @Override
     public Member login(MemberDto memberDto) {
-        Member member = memberRepository.findById(memberDto.getId());
-        if (member == null) {
-            throw new PetMilyException(MEMBER_NOT_FOUND);
-        }
-        if (!member.getPassword().equals(memberDto.getPassword())) {
-            throw new PetMilyException(INVALID_INPUT);
-        }
+        Member member = findMemberById(memberDto.getId());
+        validateCorrectPassword(memberDto, member);
         return member;
     }
 
-    private boolean checkDuplicateId(String id) {
-        return memberRepository.findById(id) != null;
+    private void checkDuplicateId(String id) {
+        if (memberRepository.findById(id).isPresent()) throw new PetMilyException(ALREADY_EXIST_ID);
+    }
+
+    private Member findMemberById(String id) {
+        return memberRepository.findById(id).orElseThrow(() -> new PetMilyException(MEMBER_NOT_FOUND));
+    }
+
+    private void validateCorrectPassword(MemberDto memberDto, Member member) {
+        if (!memberDto.getPassword().equals(member.getPassword())) throw new PetMilyException(INVALID_PASSWORD);
     }
 }
