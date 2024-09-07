@@ -10,7 +10,7 @@ import woori.petmily_card.service.CardService;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/card")
+@RequestMapping("petmily/cards")
 public class CardController {
 
     private final CardService cardService;
