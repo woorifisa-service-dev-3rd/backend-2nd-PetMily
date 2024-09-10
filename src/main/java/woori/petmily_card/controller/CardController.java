@@ -1,15 +1,15 @@
 package woori.petmily_card.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import woori.petmily_card.entity.Card;
 import woori.petmily_card.service.CardService;
 
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("petmily/cards")
 public class CardController {
 
@@ -21,63 +21,44 @@ public class CardController {
     }
 
     @GetMapping("/management")
-    public ModelAndView cardManagementPage() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
-        mav.addObject("card", new Card());
-        return mav;
+    public ResponseEntity<Card> getCardManagement() {
+        Card card = new Card();
+        return new ResponseEntity<>(card, HttpStatus.OK);
     }
 
+    // 카드 조회
     @GetMapping("/view")
-    public ModelAndView viewCard(@RequestParam int serialNo) {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
-
+    public ResponseEntity<Object> viewCard(@RequestParam int serialNo) {
         Optional<Card> card = cardService.getCardBySerialNo(serialNo);
         if (card.isPresent()) {
-            mav.addObject("card", card.get());
-            mav.addObject("message", null); // 카드가 존재할 경우 메시지 초기화
+            return new ResponseEntity<>(card.get(), HttpStatus.OK);
         } else {
-            mav.addObject("card", "Card not found");
-            mav.addObject("message", "카드를 찾을 수 없습니다.");
+            return new ResponseEntity<>("카드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
-        return mav;
     }
 
+    // 카드 해지
     @PostMapping("/cancel")
-    public ModelAndView cancelCard(@RequestParam int cardNo) {
-
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
+    public ResponseEntity<String> cancelCard(@RequestParam int cardNo) {
         boolean isDeleted = cardService.cancelCard(cardNo);
-
         if (isDeleted) {
-            mav.addObject("cancelMessage", "카드가 해지 되었습니다.");
+            return new ResponseEntity<>("카드가 해지 되었습니다.", HttpStatus.OK);
         } else {
-            mav.addObject("cancelMessage", "카드가 존재하지 않습니다.");
+            return new ResponseEntity<>("카드가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
         }
-        return mav;
     }
 
+    // 카드 발급
     @PostMapping("/issue")
-    public ModelAndView issueCard() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
-
+    public ResponseEntity<String> issueCard() {
         Card card = new Card();
-
-        // 회원 정보가 없어도 발급할 수 있도록 수정
-        // 임의의 회원 데이터를 설정하거나, member 필드를 null로 둠
-        card.setMember(null); // 또는 임의의 member 생성: new Member()
+        card.setMember(null);
 
         try {
             cardService.issueCard(card);
-            mav.addObject("issueMessage", "카드가 발급되었습니다.");
+            return new ResponseEntity<>("카드가 발급되었습니다.", HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            mav.addObject("issueMessage", "카드 발급 실패: " + e.getMessage());
+            return new ResponseEntity<>("카드 발급 실패: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
-        return mav;
     }
-
 }

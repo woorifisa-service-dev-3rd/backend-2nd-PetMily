@@ -29,10 +29,6 @@ public class CardServiceImpl implements CardService {
     @Override
     public void issueCard(Card card) {
 
-        if (card.getMember() == null) {
-            throw new IllegalArgumentException("No member found");
-        }
-
         int generatedSerialNo = generateSimpleCardNumber();
         card.setSerialNo(generatedSerialNo);
         card.setCardNumber(generateRandomCardNumber());
