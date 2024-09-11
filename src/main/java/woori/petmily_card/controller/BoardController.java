@@ -8,7 +8,6 @@ import woori.petmily_card.entity.Board;
 import woori.petmily_card.entity.Member;
 import woori.petmily_card.repository.MemberRepository;
 import woori.petmily_card.service.BoardService;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

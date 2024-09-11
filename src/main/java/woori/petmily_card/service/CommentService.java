@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import woori.petmily_card.entity.Comment;
 import woori.petmily_card.repository.CommentRepository;
 
-@Service
+
 public interface CommentService {
 
+    void addComment(int boardId, String content);
 
+    void deleteCommentByBoardId(int boardId);
 
 
 }
