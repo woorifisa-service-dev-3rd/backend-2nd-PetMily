@@ -1,6 +1,8 @@
 package woori.petmily_card.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import woori.petmily_card.entity.Card;
 import woori.petmily_card.repository.CardRepository;
@@ -55,6 +57,11 @@ public class CardServiceImpl implements CardService {
     @Override
     public int generateRandomCardNumber() {
         return random.nextInt(9000) + 1000;
+    }
+
+    @Override
+    public Page<Card> findAllCards(Pageable pageable) {
+        return cardRepository.findAll(pageable);
     }
 
 }

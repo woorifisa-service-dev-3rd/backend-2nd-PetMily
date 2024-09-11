@@ -1,5 +1,7 @@
 package woori.petmily_card.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import woori.petmily_card.entity.Card;
 
 import java.util.Optional;
@@ -11,4 +13,5 @@ public interface CardService {
     boolean cancelCard(int cardNo);
     int generateSimpleCardNumber();
     int generateRandomCardNumber();
+    Page<Card> findAllCards(Pageable pageable);
 }

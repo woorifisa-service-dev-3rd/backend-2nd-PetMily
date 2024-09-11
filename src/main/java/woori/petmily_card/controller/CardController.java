@@ -1,6 +1,10 @@
 package woori.petmily_card.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,10 +25,21 @@ public class CardController {
     }
 
     @GetMapping("/management")
-    public ModelAndView cardManagementPage() {
+    public ModelAndView cardManagementPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "serialNo") String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
+        Page<Card> cardPage = cardService.findAllCards(pageable);
+
         ModelAndView mav = new ModelAndView();
         mav.setViewName("card/management");
-        mav.addObject("card", new Card());
+        mav.addObject("cardPage", cardPage);
+        mav.addObject("currentPage", page);
+        mav.addObject("totalPages", cardPage.getTotalPages());
+        mav.addObject("sortBy", sortBy);
+
         return mav;
     }
 
