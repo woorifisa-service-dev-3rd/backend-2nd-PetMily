@@ -3,6 +3,7 @@ package woori.petmily_card.entity;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import woori.petmily_card.dto.BoardRequest;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -40,4 +41,19 @@ public class Board {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    public void updateBoard(BoardRequest boardRequest) {
+        this.title = boardRequest.getTitle();
+        this.content = boardRequest.getContent();
+    }
 }
