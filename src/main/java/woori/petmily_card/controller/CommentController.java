@@ -1,9 +1,26 @@
 package woori.petmily_card.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import woori.petmily_card.dto.comment.CommentRequest;
+import woori.petmily_card.service.CommentService;
 
-@Controller
+@RestController
 @RequestMapping("/comments")
+@RequiredArgsConstructor
 public class CommentController {
+    private final CommentService commentService;
+
+    @PostMapping
+    public ResponseEntity<Void> save(@RequestBody CommentRequest commentRequest) {
+        commentService.save(commentRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{commentNo}")
+    public ResponseEntity<Void> remove(@PathVariable int commentNo) {
+        commentService.remove(commentNo);
+        return ResponseEntity.ok().build();
+    }
 }
