@@ -8,7 +8,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public enum ErrorCode {
     INVALID_INPUT(BAD_REQUEST, "잘못된 입력 값입니다."),
     CARD_NOT_FOUND(NOT_FOUND, "존재하지 않는 카드입니다."),
-    HOSPITAL_NOT_FOUND(NOT_FOUND, "존재하지 않는 병원입니다.");
+    HOSPITAL_NOT_FOUND(NOT_FOUND, "존재하지 않는 병원입니다."),
+    PAGE_NOT_FOUND(NOT_FOUND, "존재하지 않는 페이지입니다.");
 
     private final HttpStatus status;
     private final String message;
