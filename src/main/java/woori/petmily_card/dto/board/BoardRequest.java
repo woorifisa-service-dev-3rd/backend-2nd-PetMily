@@ -1,4 +1,4 @@
-package woori.petmily_card.dto;
+package woori.petmily_card.dto.board;
 
 import lombok.Getter;
 import woori.petmily_card.entity.Board;

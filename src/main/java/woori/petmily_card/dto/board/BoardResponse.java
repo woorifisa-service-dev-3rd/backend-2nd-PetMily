@@ -1,4 +1,4 @@
-package woori.petmily_card.dto;
+package woori.petmily_card.dto.board;
 
 import lombok.Getter;
 import woori.petmily_card.entity.Board;
@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 public class BoardResponse {
 
     private int boardNo;
-    private String member;
+    private String memberName;
     private String title;
     private LocalDateTime createdAt;
 
-    private BoardResponse(int boardNo, String member, String title, LocalDateTime createdAt) {
+    private BoardResponse(int boardNo, String memberName, String title, LocalDateTime createdAt) {
         this.boardNo = boardNo;
-        this.member = member;
+        this.memberName = memberName;
         this.title = title;
         this.createdAt = createdAt;
     }
