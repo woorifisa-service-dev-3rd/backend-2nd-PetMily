@@ -3,9 +3,9 @@ package woori.petmily_card.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import woori.petmily_card.dto.BoardDetailResponse;
-import woori.petmily_card.dto.BoardPageResponse;
-import woori.petmily_card.dto.BoardRequest;
+import woori.petmily_card.dto.board.BoardDetailResponse;
+import woori.petmily_card.dto.board.BoardPageResponse;
+import woori.petmily_card.dto.board.BoardRequest;
 import woori.petmily_card.service.BoardService;
 
 @RestController
