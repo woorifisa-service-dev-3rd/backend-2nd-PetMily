@@ -9,6 +9,7 @@ import woori.petmily_card.service.CommentService;
 @RestController
 @RequestMapping("/comments")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class CommentController {
     private final CommentService commentService;
 

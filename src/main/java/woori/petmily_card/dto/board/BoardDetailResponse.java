@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 
 @Getter
 public class BoardDetailResponse {
+    private String title;
     private BoardResponse board;
     private String content;
     private List<CommentResponse> comments;
     private LocalDateTime updatedAt;
 
-    private BoardDetailResponse(BoardResponse board, String content, List<CommentResponse> comments, LocalDateTime updatedAt) {
+    private BoardDetailResponse(String title, BoardResponse board, String content, List<CommentResponse> comments, LocalDateTime updatedAt) {
+        this.title = title;
         this.board = board;
         this.content = content;
         this.comments = comments;
@@ -23,7 +25,7 @@ public class BoardDetailResponse {
     }
 
     public static BoardDetailResponse from(Board board) {
-        return new BoardDetailResponse(BoardResponse.from(board), board.getContent(),
+        return new BoardDetailResponse(board.getTitle(), BoardResponse.from(board), board.getContent(),
                 board.getComments().stream().map(CommentResponse::from).collect(Collectors.toList()), board.getUpdatedAt());
     }
 }

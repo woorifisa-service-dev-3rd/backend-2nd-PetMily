@@ -11,6 +11,7 @@ import woori.petmily_card.service.BoardService;
 @RestController
 @RequestMapping("/boards")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class BoardController {
 
     private final BoardService boardService;
@@ -22,6 +23,7 @@ public class BoardController {
 
     @GetMapping("/{boardNo}")
     public BoardDetailResponse detail(@PathVariable(value = "boardNo") int boardNo){
+        System.out.println("boardNo = " + boardNo);
         return boardService.show(boardNo);
     }
 
