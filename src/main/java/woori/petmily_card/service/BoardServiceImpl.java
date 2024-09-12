@@ -6,9 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import woori.petmily_card.dto.BoardDetailResponse;
+import woori.petmily_card.dto.BoardPageResponse;
 import woori.petmily_card.dto.BoardResponse;
 import woori.petmily_card.entity.Board;
 import woori.petmily_card.repository.BoardRepository;
+import woori.petmily_card.repository.MemberRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -19,49 +22,53 @@ import java.util.Optional;
 @Transactional
 public class BoardServiceImpl implements BoardService {
 
-
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
     private final int SIZE = 5; // 페이지당 5개 만 나오게
 
     @Override
-    public Board save(Board board) {
-        return boardRepository.save(board);
-    }
-
-    @Override
-    public List<Board> findAll() {
-        return boardRepository.findAll();
-    }
-
-    @Override
-    public Optional<Board> findById(int id) {
-        return boardRepository.findById(id);
-    }
-
-    @Override
-    public void deleteById(int id) {
-        boardRepository.deleteById(id);
-    }
-
-    @Override
-    public Page<BoardResponse> showAll(int page) {
-        Page<Board> boards = getBoards(page);
-        return boards.map(BoardResponse::from);
+    public BoardPageResponse showAll(int page) {
+        // if(page <= 0) 예외처리
+        Page<Board> boards = getBoards(page - 1);
+        // if(page > boards.getTotalPages()) 예외처리
+        return BoardPageResponse.from(boards);
     }
 
     private Page<Board> getBoards(int page) {
-        Pageable pageable = PageRequest.of(page,SIZE);
+        Pageable pageable = PageRequest.of(page, SIZE);
         return boardRepository.findAll(pageable);
     }
 
     @Override
-    public BoardResponse show(int boardNo) {
-        return BoardResponse.from(getBoard(boardNo));
+    public BoardDetailResponse show(int boardNo) {
+        return BoardDetailResponse.from(getBoard(boardNo));
     }
 
     private Board getBoard(int boardNo) {
-        return boardRepository.findById(boardNo).orElseThrow();
+        return boardRepository.findById(boardNo).orElseThrow(() ->
+                new RuntimeException("boardNo 에 해당하는 board 가 존재하지 않습니다."));
     }
+
+//    @Override
+//    public Board save(Board board) {
+//        return boardRepository.save(board);
+//    }
+
+
+//    private Optional<Board> findById(int id) {
+//        return boardRepository.findById(id);
+//    }
+
+//    @Override
+//    public void deleteById(int id) {
+//        boardRepository.deleteById(id);
+//    }
+
+
+//
+
+//
+
 
 
 }
