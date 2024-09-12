@@ -1,5 +1,7 @@
 package woori.petmily_card.service;
 
+import org.springframework.data.domain.Page;
+import woori.petmily_card.dto.BoardResponse;
 import woori.petmily_card.entity.Board;
 
 import java.util.List;
@@ -15,6 +17,9 @@ public interface BoardService {
 
     void deleteById(int boardId);
 
+    Page<BoardResponse> showAll(int page);
+
+    BoardResponse show(int boardNo);
 
 
 

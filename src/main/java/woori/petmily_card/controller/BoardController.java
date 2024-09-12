@@ -1,9 +1,11 @@
 package woori.petmily_card.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import woori.petmily_card.dto.BoardResponse;
 import woori.petmily_card.entity.Board;
 import woori.petmily_card.entity.Member;
 import woori.petmily_card.repository.MemberRepository;
@@ -26,11 +28,11 @@ public class BoardController {
     public String list(Model model){
         List<Board> boards = boardService.findAll();
         model.addAttribute("boards", boards);
-        return "board"; // board.html 렌더링
+        return "redirect:/boards/0"; // board.html 렌더링
     }
 
     // 게시글 상세 정보
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public String detail(@PathVariable int id, Model model){
         Board board = boardService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid board ID: " + id));
@@ -90,5 +92,12 @@ public class BoardController {
         boardService.deleteById(id);
         return "redirect:/boards";
     }
+    @GetMapping("/{page}")
+    public String showBoards(@PathVariable(value = "page")int page, Model model){
+        Page<BoardResponse> boards = boardService.showAll(page);
+        model.addAttribute("boards",boards.getContent());
+        model.addAttribute("currentPage",page);
+        model.addAttribute("totalPages",boards.getTotalPages());
+        return "board";
+    }
 }
-
