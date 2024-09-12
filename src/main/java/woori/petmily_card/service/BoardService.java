@@ -1,8 +1,8 @@
 package woori.petmily_card.service;
 
-import woori.petmily_card.dto.BoardDetailResponse;
-import woori.petmily_card.dto.BoardPageResponse;
-import woori.petmily_card.dto.BoardRequest;
+import woori.petmily_card.dto.board.BoardDetailResponse;
+import woori.petmily_card.dto.board.BoardPageResponse;
+import woori.petmily_card.dto.board.BoardRequest;
 
 public interface BoardService {
     BoardPageResponse showAll(int page);
