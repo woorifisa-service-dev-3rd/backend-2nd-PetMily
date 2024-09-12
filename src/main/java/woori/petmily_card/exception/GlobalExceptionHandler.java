@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(PetMilyException.class)
-    public ResponseEntity<ErrorResponse> handleWoohaengshiException(
+    public ResponseEntity<ErrorResponse> handlePetMilyException(
             PetMilyException exception) {
         ErrorCode errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.from(errorCode));
@@ -36,8 +36,7 @@ public class GlobalExceptionHandler {
                                 exception.getBindingResult().getFieldErrors(), INVALID_INPUT));
     }
 
-    List<String> ENUM_CLASSES =
-            List.of("Name", "Course", "State", "StatisticsType", "DefaultSubject");
+    List<String> ENUM_CLASSES = List.of("SaleType");
     String TYPE_MISMATCH_MESSAGE = "%s의 입력 값으로 %s는 type이 맞지 않습니다. %s의 type은 %s여야 합니다.";
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)

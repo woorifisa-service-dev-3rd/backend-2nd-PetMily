@@ -1,12 +1,14 @@
 package woori.petmily_card.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import woori.petmily_card.dto.TransactionResponse;
 import woori.petmily_card.service.TransactionService;
 
 @Controller
@@ -27,10 +29,13 @@ public class TransactionController {
         return "transaction/showReceipt";
     }
 
-    @GetMapping("/{cardNo}/{page}")
-    public String showTransactions(@PathVariable(value="cardNo") int cardNo,
-                                   @PathVariable(value="page") int page, Model model) {
-        model.addAttribute("transactions", transactionService.show(cardNo, page));
+    @GetMapping("/{page}")
+    public String showTransactions(@PathVariable(value="page") int page, Model model) {
+        int memberNo = 1; // 회원 기능 연결 후 수정
+        Page<TransactionResponse> transactions = transactionService.show(memberNo, page);
+        model.addAttribute("transactions", transactions.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", transactions.getTotalPages());
         return "transaction/showTransaction";
     }
 }
