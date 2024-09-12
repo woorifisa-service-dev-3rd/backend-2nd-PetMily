@@ -5,16 +5,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import woori.petmily_card.entity.Card;
 import woori.petmily_card.service.CardService;
 
 import java.util.Optional;
 
-@Controller
-@RequestMapping("petmily/cards")
+@RestController
+@RequestMapping("/cards")
 public class CardController {
 
     private final CardService cardService;
@@ -25,7 +25,7 @@ public class CardController {
     }
 
     @GetMapping("/management")
-    public ModelAndView cardManagementPage(
+    public ResponseEntity<Page<Card>> cardManagementPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "serialNo") String sortBy) {
@@ -33,66 +33,44 @@ public class CardController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         Page<Card> cardPage = cardService.findAllCards(pageable);
 
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
-        mav.addObject("cardPage", cardPage);
-        mav.addObject("currentPage", page);
-        mav.addObject("totalPages", cardPage.getTotalPages());
-        mav.addObject("sortBy", sortBy);
-
-        return mav;
+        return ResponseEntity.ok(cardPage);
     }
 
     @GetMapping("/view")
-    public ModelAndView viewCard(@RequestParam int serialNo) {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
-
+    public ResponseEntity<?> viewCard(@RequestParam int serialNo) {
         Optional<Card> card = cardService.getCardBySerialNo(serialNo);
+
         if (card.isPresent()) {
-            mav.addObject("card", card.get());
-            mav.addObject("message", null); // 카드가 존재할 경우 메시지 초기화
+            return ResponseEntity.ok(card.get()); // 카드 데이터와 함께 200 OK 응답
         } else {
-            mav.addObject("card", "Card not found");
-            mav.addObject("message", "카드를 찾을 수 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("카드를 찾을 수 없습니다.");
         }
-        return mav;
     }
 
     @PostMapping("/cancel")
-    public ModelAndView cancelCard(@RequestParam int cardNo) {
-
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
+    public ResponseEntity<String> cancelCard(@RequestParam int cardNo) {
         boolean isDeleted = cardService.cancelCard(cardNo);
 
         if (isDeleted) {
-            mav.addObject("cancelMessage", "카드가 해지 되었습니다.");
+            return ResponseEntity.ok("카드가 해지 되었습니다."); // 200 OK 응답
         } else {
-            mav.addObject("cancelMessage", "카드가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("카드가 존재하지 않습니다.");
         }
-        return mav;
     }
 
     @PostMapping("/issue")
-    public ModelAndView issueCard() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("card/management");
-
+    public ResponseEntity<String> issueCard() {
         Card card = new Card();
-
-        // 회원 정보가 없어도 발급할 수 있도록 수정
-        // 임의의 회원 데이터를 설정하거나, member 필드를 null로 둠
-        card.setMember(null); // 또는 임의의 member 생성: new Member()
+        card.setMember(null); // 임의의 member 데이터 처리
 
         try {
             cardService.issueCard(card);
-            mav.addObject("issueMessage", "카드가 발급되었습니다.");
+            return ResponseEntity.ok("카드가 발급되었습니다."); // 200 OK 응답
         } catch (IllegalArgumentException e) {
-            mav.addObject("issueMessage", "카드 발급 실패: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("카드 발급 실패: " + e.getMessage());
         }
-
-        return mav;
     }
-
 }
