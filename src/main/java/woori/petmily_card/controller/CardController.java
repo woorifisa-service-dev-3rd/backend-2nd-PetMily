@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/cards")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CardController {
 
     private final CardService cardService;
