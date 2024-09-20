@@ -15,6 +15,7 @@ import java.util.List;
 
 @Builder
 @Getter
+@Setter
 public class Card {
 
     @Id
@@ -41,13 +42,7 @@ public class Card {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+    public void setCardNumber(int generatedCardNumber) {
+        this.cardNo = generatedCardNumber;
     }
 }

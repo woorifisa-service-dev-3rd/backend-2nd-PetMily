@@ -1,16 +1,21 @@
 package woori.petmily_card.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import woori.petmily_card.entity.Card;
 import woori.petmily_card.repository.CardRepository;
 
+import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
+    private final Random random = new Random();
 
     @Autowired
     public CardServiceImpl(CardRepository cardRepository) {
@@ -24,8 +29,14 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card issueCard(Card card) {
-        return cardRepository.save(card);
+    public void issueCard(Card card) {
+
+        int generatedSerialNo = generateSimpleCardNumber();
+        card.setSerialNo(generatedSerialNo);
+        card.setCardNumber(generateRandomCardNumber());
+        card.setExpirationDate(LocalDate.now().plusYears(1));
+
+        cardRepository.save(card);
     }
 
     @Override
@@ -37,4 +48,20 @@ public class CardServiceImpl implements CardService {
         }
         return false;
     }
+
+    @Override
+    public int generateSimpleCardNumber() {
+        return 100000 + random.nextInt(900000);
+    }
+
+    @Override
+    public int generateRandomCardNumber() {
+        return random.nextInt(9000) + 1000;
+    }
+
+    @Override
+    public Page<Card> findAllCards(Pageable pageable) {
+        return cardRepository.findAll(pageable);
+    }
+
 }
