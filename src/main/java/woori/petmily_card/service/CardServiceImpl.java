@@ -1,6 +1,7 @@
 package woori.petmily_card.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class CardServiceImpl implements CardService {
 
 
     @Override
+    @Cacheable("cards")
     public Optional<Card> getCardBySerialNo(int serialNo) {
         return cardRepository.findBySerialNo(serialNo);
     }
