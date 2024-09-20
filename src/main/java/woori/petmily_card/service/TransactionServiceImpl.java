@@ -33,7 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final CardRepository cardRepository;
     private final HospitalRepository hospitalRepository;
 
-    private final int SIZE = 10;
+    private final int SIZE = 5;
 
     @Override
     public int save(int memberNo, int hospitalNo, int amount) {
@@ -45,10 +45,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TransactionResponse> show(int cardNo, int page) {
-        return getAllTransactionByCardNo(cardNo, page).stream().map(
-                transaction -> TransactionResponse.of(transaction.getAmount(), transaction.getHospital()))
-                .collect(Collectors.toList());
+    public Page<TransactionResponse> show(int memberNo, int page) {
+        return getAllTransactionByCardNo(getCard(memberNo).getCardNo(), page).map(
+                transaction -> TransactionResponse.of(transaction.getAmount(), transaction.getHospital()));
     }
 
     private Card getCard(int memberNo) {
