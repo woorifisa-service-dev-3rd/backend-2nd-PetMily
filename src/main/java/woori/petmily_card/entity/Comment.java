@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Builder
 @Getter
 public class Comment {

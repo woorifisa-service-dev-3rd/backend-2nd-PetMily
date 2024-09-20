@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Board Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+            font-size: 1.5em;
+            margin: 0;
+            flex: 1;
+        }
+        .header .author {
+            font-size: 0.8em;
+            color: #555;
+            text-align: right;
+            flex: 1;
+        }
+        .header .meta-dates {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 0.8em;
+            color: #888;
+        }
+        .header .meta-dates p {
+            margin: 5px 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .meta {
+            font-size: 0.8em;
+            color: #888;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .meta p {
+            margin: 5px 0;
+        }
+        .meta span {
+            font-weight: bold;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .actions {
+            margin-top: 20px;
+        }
+        form {
+            display: inline;
+        }
+        button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 th:text="${board.title}">Title</h1>
+        <div class="meta-dates">
+            <p><span>Created At:</span>
+                <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Creation Date</span>
+            </p>
+            <p><span>Updated At:</span>
+                <span th:text="${#temporals.format(board.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">Update Date</span>
+            </p>
+        </div>
+        <div class="author">
+            <p><span>Author:</span> <span th:text="${board.member.name}">Author Name</span></p>
+        </div>
+    </div>
+
+    <div class="content">
+        <p th:text="${board.content}">Content</p>
+    </div>
+
+
+
+    <div class="actions">
+        <a th:href="@{'/boards/edit/' + ${board.boardNo}}">Edit</a>
+        <form th:action="@{'/boards/delete/' + ${board.boardNo}}" method="post" style="display:inline;">
+            <button type="submit">Delete</button>
+        </form>
+        <a href="/boards">Back to List</a>
+    </div>
+</div>
+</body>
+</html>
