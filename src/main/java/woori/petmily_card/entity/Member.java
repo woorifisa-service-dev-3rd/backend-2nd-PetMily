@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
+@Setter
 public class Member {
 
     @Id
@@ -40,4 +41,13 @@ public class Member {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

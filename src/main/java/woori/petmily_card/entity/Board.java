@@ -55,4 +55,5 @@ public class Board {
         this.title = boardRequest.getTitle();
         this.content = boardRequest.getContent();
     }
+
 }
